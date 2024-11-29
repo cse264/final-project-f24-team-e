@@ -1,64 +1,29 @@
 // handles user authentication and displays login/profile page
 import React from 'react';
 import { GoogleLogin } from '@react-oauth/google';
+import { useNavigate } from 'react-router-dom';
 import {
  Box,
  Container,
  Paper,
- Typography,
- Button
+ Typography
 } from '@mui/material';
 import { useAuth } from '../context/authContext';
 
 const LoginPage = () => {
-    const { login, logout, user } = useAuth();
+    const { login} = useAuth();
 
-    // render user profile and logout when authenticated
-    if (user) {
-        return (
-            <Box
-                sx={{
-                    minHeight: '100vh',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    bgcolor: 'background.default',
-                }}
-                >
-                <Paper
-                    elevation={3}
-                    sx={{
-                        p: { xs: 3, sm: 5 },
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        maxWidth: '400px'
-                    }}
-                >
-                    <Typography variant="h5" sx={{ mb: 2 }}>
-                        Welcome, {user.name}!
-                    </Typography>
-                    <img
-                        src={user.picture}
-                        alt="profile"
-                        style={{
-                            borderRadius: '50%',
-                            width: '100px',
-                            height: '100px',
-                            marginBottom: '20px'
-                    }}
-                    />
-                    <Button
-                        variant="outlined"
-                        onClick={logout}
-                        >
-                        Logout
-                    </Button>
-                </Paper>
-            </Box>
-        );
-    }
+    const navigate = useNavigate();
+
+    // handle successful login and redirect
+    const handleLoginSuccess = async (credentialResponse) => {
+        try {
+            await login(credentialResponse);
+            navigate('/');
+        } catch (error) {
+            console.error('Login failed:', error);
+        }
+    };
 
     // render login page for unauthenticated users
     return (
@@ -102,7 +67,7 @@ const LoginPage = () => {
             </Typography>
 
             <GoogleLogin
-                onSuccess={login}
+                onSuccess={handleLoginSuccess}
                 onError={() => console.log('Login Failed')}
             />
         </Paper>
