@@ -1,6 +1,7 @@
 // authentication context for managing user state and auth flows
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
+import { userService } from '../services/api/userService';
 
 // create auth context
 const AuthContext = createContext(null);
@@ -9,21 +10,45 @@ export const AuthProvider = ({ children }) => {
 
     // initialize with saved user data from localStorage for persistence
     const [user, setUser] = useState(() => {
-    const savedUser = localStorage.getItem('user');
-    return savedUser ? JSON.parse(savedUser) : null;
+        const savedUser = localStorage.getItem('user');
+        return savedUser ? JSON.parse(savedUser) : null;
     });
 
     // process google login response and store user data
-    const login = (credentialResponse) => {
-        const decoded = jwtDecode(credentialResponse.credential);
-        const userData = {
-            email: decoded.email,
-            name: decoded.name,
-            picture: decoded.picture,
-            token: credentialResponse.credential
-        };
-        setUser(userData);
-        localStorage.setItem('user', JSON.stringify(userData));
+    const login = async (credentialResponse) => {
+        try {
+
+            const decoded = jwtDecode(credentialResponse.credential);
+
+            // check if user exists in our database
+            const existingUser = await userService.getByEmail(decoded.email);
+
+            let userData;
+
+            if (!existingUser.data) {
+                // create new user if they don't exist
+                const newUser = await userService.create({
+                    email: decoded.email,
+                    name: decoded.name,
+                    role: 'user' // default role for new users
+                });
+                userData = newUser.data;
+            } else {
+                userData = existingUser.data;
+            }
+
+            // combine database user data with auth info
+            const authData = {
+                ...userData,
+                token: credentialResponse.credential
+            };
+
+            setUser(authData);
+            localStorage.setItem('user', JSON.stringify(authData));
+        } catch (error) {
+            console.error('Login failed:', error);
+            throw error;
+        }
     };
 
     // clear user data on logout
@@ -37,7 +62,7 @@ export const AuthProvider = ({ children }) => {
     if (user?.token) {
         const decoded = jwtDecode(user.token);
         if (decoded.exp * 1000 < Date.now()) {
-        logout();
+            logout();
         }
     }
     }, [user]);
