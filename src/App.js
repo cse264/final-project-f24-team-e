@@ -4,6 +4,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { AuthProvider } from './context/authContext';
 import ProtectedRoute from './components/auth/protectedRoute';
 import LoginPage from './pages/loginPage';
+import MainLayout from './components/layout/mainLayout';
 
 // placeholder components until we create them
 const HomePage = () => <div>Home Page</div>;
@@ -22,10 +23,12 @@ function App() {
 
             {/* protected routes */}
             <Route element={<ProtectedRoute />}>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/characters" element={<CharactersPage />} />
-              <Route path="/vote" element={<VotingPage />} />
-              <Route path="/admin" element={<AdminDashboard />} />
+              <Route element={<MainLayout />}>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/characters" element={<CharactersPage />} />
+                <Route path="/vote" element={<VotingPage />} />
+                <Route path="/admin" element={<AdminDashboard />} />
+              </Route>
             </Route>
 
             {/* redirect other routes to home */}
