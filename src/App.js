@@ -8,9 +8,7 @@ import MainLayout from './components/layout/mainLayout';
 import CharactersPage from './pages/charactersPage';
 import VotingPage from './pages/votingPage';
 import HomePage from './pages/homePage';
-
-// placeholder components until we create them
-const AdminDashboard = () => <div>Admin Dashboard</div>;
+import AdminPage from './pages/adminPage';
 
 // protected route for admin access
 const AdminProtectedRoute = ({ children }) => {
@@ -41,7 +39,7 @@ function App() {
                   path="/admin"
                   element={
                     <AdminProtectedRoute>
-                      <AdminDashboard />
+                      <AdminPage/>
                     </AdminProtectedRoute>
                   }
                 />
