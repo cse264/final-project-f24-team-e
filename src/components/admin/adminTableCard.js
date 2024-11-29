@@ -1,10 +1,36 @@
 // src/components/admin/AdminTableCard.js
 import React, { useState } from 'react';
 import {
-  Table, TableBody, TableCell, TableContainer, TableHead,
-  TableRow, Paper, Select, MenuItem, Button, Alert
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Select,
+  MenuItem,
+  Button,
+  Alert,
 } from '@mui/material';
 import { userService } from '../../services/api/userService';
+
+// styles for table container and headers
+const styles = {
+  container: {
+    mt: 4,
+    bgcolor: 'grey.100', // light grey background
+    borderRadius: 2, // rounded corners
+    p: 2, // padding inside the container
+  },
+  headerCell: {
+    bgcolor: 'grey.200', // distinct background color for header
+    fontWeight: 'bold', // bold text
+    textTransform: 'uppercase', // uppercase headings for distinction
+    textAlign: 'left-align', //
+    padding: 2, // padding for better spacing
+  },
+};
 
 const AdminTableCard = ({ users, setUsers }) => {
   const [error, setError] = useState(null);
@@ -16,10 +42,18 @@ const AdminTableCard = ({ users, setUsers }) => {
       setSuccessMessage('');
       setError(null);
 
-      // call the userService to update the role
-      const response = await userService.update(userId, { role: newRole });
+      // find the current user data from the state
+      const currentUser = users.find((user) => user.id === userId);
 
-      // update local user state with the new role
+      if (!currentUser) {
+        setError('User not found in the state');
+        return;
+      }
+
+      // call userService to update the role
+      const response = await userService.update(userId, { role: newRole }, currentUser);
+
+      // update local user state
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
           user.id === userId ? { ...user, role: response.data.role } : user
@@ -28,21 +62,22 @@ const AdminTableCard = ({ users, setUsers }) => {
 
       setSuccessMessage('Role updated successfully.');
     } catch (err) {
+      console.error('Error updating role:', err);
       setError('Failed to update role.');
     }
   };
 
   return (
-    <TableContainer component={Paper} sx={{ mt: 4 }}>
+    <TableContainer component={Paper} sx={styles.container}>
       {successMessage && <Alert severity="success">{successMessage}</Alert>}
       {error && <Alert severity="error">{error}</Alert>}
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>Role</TableCell>
-            <TableCell>Actions</TableCell>
+            <TableCell sx={styles.headerCell}>Name</TableCell>
+            <TableCell sx={styles.headerCell}>Email</TableCell>
+            <TableCell sx={styles.headerCell}>Role</TableCell>
+            <TableCell sx={styles.headerCell}>Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

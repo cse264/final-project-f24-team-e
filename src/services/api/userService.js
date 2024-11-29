@@ -53,29 +53,23 @@ export const userService = {
   },
 
   // updates a specific user's details
-  async update(userId, updates) {
-    if (!userId || !updates || !updates.role) {
-      throw new ValidationError('User ID and role are required', {}, 400);
+  async update(userId, updates, currentUserData) {
+    if (!userId || !updates || !currentUserData) {
+      throw new ValidationError('User ID, updates, and current user data are required', {}, 400);
     }
 
     try {
-      // fetch current user data
-      const currentUser = await apiRequest(`/users/${userId}`, {
-        baseUrl: API_CONFIG.URLS.LOCAL_API,
-      });
-
-      if (!currentUser) {
-        throw new APIError('User not found', 404);
-      }
-
-      // merge updates into existing user data
-      const updatedUser = { ...currentUser, ...updates };
+      // merge updates with current user data
+      const updatedUser = { ...currentUserData, ...updates };
 
       // send updated user back to server
       const response = await apiRequest(`/users/${userId}`, {
         baseUrl: API_CONFIG.URLS.LOCAL_API,
         method: 'PUT',
         body: JSON.stringify(updatedUser),
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
 
       return {
