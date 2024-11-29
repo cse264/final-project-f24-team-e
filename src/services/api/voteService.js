@@ -110,5 +110,54 @@ export const voteService = {
         } catch (error) {
             throw new APIError('Failed to record vote', 500);
         }
-    }
+    },
+
+    // get top voted characters
+    async getTopCharacters(limit = 5) {
+        try {
+        const votes = await apiRequest('/votes', {
+            baseUrl: API_CONFIG.URLS.LOCAL_API,
+        });
+
+        const characterVotes = votes.reduce((acc, vote) => {
+            acc[vote.characterId] = (acc[vote.characterId] || 0) + 1;
+            return acc;
+        }, {});
+
+        const topCharacters = Object.entries(characterVotes)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, limit)
+            .map(([characterId, voteCount]) => ({
+            characterId: parseInt(characterId),
+            voteCount,
+            }));
+
+        return {
+            status: 200,
+            data: topCharacters,
+            message: 'Top characters retrieved successfully',
+        };
+        } catch (error) {
+        throw new APIError('Failed to fetch top characters', 500);
+        }
+    },
+
+    // get total vote count
+    async getTotalVoteCount() {
+        try {
+        const votes = await apiRequest('/votes', {
+            baseUrl: API_CONFIG.URLS.LOCAL_API,
+        });
+
+        const totalVotes = votes.length;
+
+        return {
+            status: 200,
+            data: totalVotes,
+            message: 'Total vote count retrieved successfully',
+        };
+        } catch (error) {
+        throw new APIError('Failed to fetch total vote count', 500);
+        }
+    },
 };
