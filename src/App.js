@@ -1,16 +1,25 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { AuthProvider } from './context/authContext';
+import { AuthProvider, useAuth} from './context/authContext';
 import ProtectedRoute from './components/auth/protectedRoute';
 import LoginPage from './pages/loginPage';
 import MainLayout from './components/layout/mainLayout';
+import CharactersPage from './pages/charactersPage';
+import VotingPage from './pages/votingPage';
+import HomePage from './pages/homePage';
 
 // placeholder components until we create them
-const HomePage = () => <div>Home Page</div>;
-const CharactersPage = () => <div>Characters Page</div>;
-const VotingPage = () => <div>Voting Page</div>;
 const AdminDashboard = () => <div>Admin Dashboard</div>;
+
+// protected route for admin access
+const AdminProtectedRoute = ({ children }) => {
+  const { user } = useAuth();
+  if (user?.role !== 'admin') {
+    return <Navigate to="/" replace />;
+  }
+  return children;
+};
 
 function App() {
   return (
@@ -27,7 +36,15 @@ function App() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/characters" element={<CharactersPage />} />
                 <Route path="/vote" element={<VotingPage />} />
-                <Route path="/admin" element={<AdminDashboard />} />
+                {/* admin route with role-based access */}
+                <Route
+                  path="/admin"
+                  element={
+                    <AdminProtectedRoute>
+                      <AdminDashboard />
+                    </AdminProtectedRoute>
+                  }
+                />
               </Route>
             </Route>
 
