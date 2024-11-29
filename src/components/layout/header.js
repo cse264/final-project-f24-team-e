@@ -2,21 +2,18 @@
 import React, { useState } from 'react';
 import {
   AppBar, Toolbar, Typography, Box, Avatar, IconButton,
-  Menu, MenuItem, useTheme, useMediaQuery, Stack,
-  Divider, ListItemIcon
+  Stack, Menu, MenuItem, ListItemIcon
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
-import PersonIcon from '@mui/icons-material/Person';
 import { useAuth } from '../../context/authContext';
 
-const Header = () => {
+// responsive header with drawer integration
+const Header = ({ handleDrawerOpen, open }) => {
   const { user, logout } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  // menu handlers
+  // menu state handlers
   const handleMenu = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
   const handleLogout = () => {
@@ -24,24 +21,26 @@ const Header = () => {
     handleClose();
   };
 
+  // app bar transition styles
+  const appBarStyles = {
+    width: open ? `calc(100% - ${240}px)` : '100%',
+    ml: open ? `${240}px` : 0,
+    transition: theme => theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    })
+  };
+
+  // menu props configuration
   const menuProps = {
     slotProps: {
       paper: {
-        elevation: 3,
+        elevation: 0,
         sx: {
           overflow: 'visible',
           filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
           mt: 1.5,
-          minWidth: 200,
-          '& .MuiMenuItem-root': {
-            px: 2,
-            py: 1,
-            typography: 'body2',
-            borderRadius: 0.5,
-            '&:hover': {
-              backgroundColor: theme.palette.action.hover,
-            }
-          },
+          minWidth: 120,
         }
       }
     },
@@ -50,35 +49,40 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="fixed" sx={appBarStyles}>
       <Toolbar>
-        {/* desktop title */}
-        {!isMobile && (
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            The Office Favorites
-          </Typography>
-        )}
+        {/* drawer toggle button */}
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          onClick={handleDrawerOpen}
+          edge="start"
+          sx={{ mr: 2, ...(open && { display: 'none' }) }}
+        >
+          <MenuIcon />
+        </IconButton>
 
-        {/* user info and menu button */}
-        <Box sx={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 2 }}>
+        {/* app title */}
+        <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
+          The Office Favorites
+        </Typography>
+
+        {/* user profile section */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Stack direction="row" spacing={2} alignItems="center">
-            <Avatar
-              src={user?.picture}
-              alt={user?.name}
-              sx={{ width: 40, height: 40, border: '2px solid white' }}
-            />
-            {/* desktop user info */}
-            {!isMobile && (
-              <Stack direction="column" spacing={0}>
-                <Typography variant="body2">{user?.name}</Typography>
-                <Typography variant="caption" color="grey.300">{user?.role}</Typography>
-              </Stack>
-            )}
+            <Stack direction="column" spacing={0}>
+              <Typography variant="body2">{user?.name}</Typography>
+              <Typography variant="caption" color="grey.300">{user?.role}</Typography>
+            </Stack>
+            {/* profile avatar/menu trigger */}
+            <IconButton onClick={handleMenu} sx={{ p: 0 }}>
+              <Avatar
+                src={user?.picture}
+                alt={user?.name}
+                sx={{ width: 40, height: 40, border: '2px solid white' }}
+              />
+            </IconButton>
           </Stack>
-
-          <IconButton size="large" color="inherit" onClick={handleMenu}>
-            <MenuIcon />
-          </IconButton>
         </Box>
 
         {/* dropdown menu */}
@@ -88,30 +92,10 @@ const Header = () => {
           onClose={handleClose}
           {...menuProps}
         >
-          {/* mobile menu items */}
-          {isMobile && (
-            <>
-              <Box sx={{ textAlign: 'center', py: 1 }}>
-                <Typography variant="subtitle2" color="primary">
-                  The Office Favorites
-                </Typography>
-              </Box>
-              <Divider sx={{ my: 1 }} />
-              <MenuItem sx={{ pointerEvents: 'none' }}>
-                <ListItemIcon><PersonIcon fontSize="small" /></ListItemIcon>
-                <Stack direction="column" spacing={0}>
-                  <Typography variant="body2">{user?.name}</Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    {user?.role}
-                  </Typography>
-                </Stack>
-              </MenuItem>
-              <Divider sx={{ my: 1 }} />
-            </>
-          )}
-          {/* logout option */}
           <MenuItem onClick={handleLogout}>
-            <ListItemIcon><LogoutIcon fontSize="small" /></ListItemIcon>
+            <ListItemIcon>
+              <LogoutIcon fontSize="small" />
+            </ListItemIcon>
             <Typography variant="body2">Logout</Typography>
           </MenuItem>
         </Menu>
