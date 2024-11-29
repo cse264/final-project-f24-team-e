@@ -1,6 +1,7 @@
 // src/services/api/userService.js
 import { apiRequest } from '../utils/apiUtils';
 import { ValidationError, APIError } from '../errors';
+import { API_CONFIG } from '../config';
 
 export const userService = {
   // checks if user data meets requirements
@@ -17,7 +18,9 @@ export const userService = {
   // retrieves all users from the database
   async getAll() {
     try {
-      const users = await apiRequest('/users');
+      const users = await apiRequest('/users', {
+        baseUrl: API_CONFIG.URLS.LOCAL_API
+      });
       return {
         status: 200,
         data: users,
@@ -35,7 +38,9 @@ export const userService = {
     }
 
     try {
-      const users = await apiRequest(`/users?email=${encodeURIComponent(email)}`);
+      const users = await apiRequest(`/users?email=${encodeURIComponent(email)}`, {
+        baseUrl: API_CONFIG.URLS.LOCAL_API
+      });
 
       return {
         status: 200,
@@ -59,6 +64,7 @@ export const userService = {
       };
 
       const created = await apiRequest('/users', {
+        baseUrl: API_CONFIG.URLS.LOCAL_API,
         method: 'POST',
         body: JSON.stringify(newUser)
       });

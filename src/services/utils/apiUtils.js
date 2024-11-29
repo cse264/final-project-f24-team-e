@@ -4,20 +4,25 @@ import { APIError } from '../errors';
 
 // handles all api requests with timeout and error management
 export const apiRequest = async (endpoint, options = {}) => {
+  const { baseUrl } = options;
 
-    // setup abort controller for timeout handling
+  if (!baseUrl) {
+    throw new Error('baseUrl is required');
+  }
+
+  // setup abort controller for timeout handling
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.TIMEOUT);
 
   try {
     // make the api request with provided options
-    const response = await fetch(`${API_CONFIG.BASE_URL}${endpoint}`, {
+    const response = await fetch(`${baseUrl}${endpoint}`, {
       headers: {
         ...API_CONFIG.DEFAULT_HEADERS,
         ...options.headers,
       },
       signal: controller.signal,
-      ...options,
+      ...options
     });
 
     // clear timeout since request completed
