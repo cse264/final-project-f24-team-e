@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './components/auth/ProtectedRoute';
-import LoginPage from './pages/LoginPage';
+import { AuthProvider } from './context/authContext';
+import ProtectedRoute from './components/auth/protectedRoute';
+import LoginPage from './pages/loginPage';
 
 // placeholder components until we create them
 const HomePage = () => <div>Home Page</div>;

@@ -8,7 +8,7 @@ import {
  Typography,
  Button
 } from '@mui/material';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/authContext';
 
 const LoginPage = () => {
     const { login, logout, user } = useAuth();
