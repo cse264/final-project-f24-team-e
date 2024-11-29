@@ -1,7 +1,7 @@
 // src/components/layout/Sidebar.jsx
 import React from 'react';
 import {
-  Box, Drawer, List, ListItem, ListItemButton,
+  Drawer, List, ListItem, ListItemButton,
   ListItemIcon, ListItemText, IconButton, Divider, styled
 } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
