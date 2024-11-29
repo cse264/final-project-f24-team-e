@@ -1,17 +1,21 @@
 import { apiRequest } from '../utils/apiUtils';
 import { APIError } from '../errors';
+import { API_CONFIG } from '../config';
 
 export const characterService = {
 
     // fetch all characters
-    async getAll() {
+    async getAll(page = 1) {
         try {
-            const characters = await apiRequest('/characters', {
+            const response = await apiRequest(`/characters?page=${page}&includeEpisodes=true`, {
                 baseUrl: API_CONFIG.URLS.OFFICE_API
             });
             return {
                 status: 200,
-                data: characters,
+                data: {
+                    characters: response.results,
+                    pagination: response.meta
+                },
                 message: 'Characters retrieved successfully'
             };
         } catch (error) {
