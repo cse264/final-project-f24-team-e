@@ -13,7 +13,8 @@ export const voteService = {
 
             // count votes per character
             const voteCounts = votes.reduce((acc, vote) => {
-                acc[vote.characterId] = (acc[vote.characterId] || 0) + 1;
+                const charId = parseInt(vote.characterId);
+                acc[charId] = (acc[charId] || 0) + 1;
                 return acc;
             }, {});
 
@@ -35,7 +36,7 @@ export const voteService = {
             throw new Error('No vote found to remove');
           }
 
-          await apiRequest(`/votes/${currentVote.data.id}`, {
+          await apiRequest(`/votes/${currentVote.data._id}`, {
             baseUrl: API_CONFIG.URLS.LOCAL_API,
             method: 'DELETE'
           });
@@ -74,7 +75,7 @@ export const voteService = {
 
             if (existingVote.data) {
                 // update existing vote
-                const updated = await apiRequest(`/votes/${existingVote.data.id}`, {
+                const updated = await apiRequest(`/votes/${existingVote.data._id}`, {
                     baseUrl: API_CONFIG.URLS.LOCAL_API,
                     method: 'PUT',
                     body: JSON.stringify({

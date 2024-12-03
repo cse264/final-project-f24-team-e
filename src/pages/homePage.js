@@ -80,8 +80,8 @@ const HomePage = () => {
         setTopCharacters(topCharactersWithDetails);
 
         // fetch user's vote if authenticated
-        if (user?.id) {
-          const userVoteResponse = await voteService.getUserVote(user.id);
+        if (user?._id) {
+          const userVoteResponse = await voteService.getUserVote(user._id);
           if (userVoteResponse.data) {
             const userVotedCharacter = charactersMap[userVoteResponse.data.characterId];
             if (userVotedCharacter) {
@@ -104,7 +104,7 @@ const HomePage = () => {
     };
 
     fetchData();
-  }, [user?.id]);
+  }, [user?._id]);
 
   // render a loading indicator while data is being fetched
   if (loading) {

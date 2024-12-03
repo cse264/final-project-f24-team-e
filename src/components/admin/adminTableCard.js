@@ -43,7 +43,7 @@ const AdminTableCard = ({ users, setUsers }) => {
       setError(null);
 
       // find the current user data from the state
-      const currentUser = users.find((user) => user.id === userId);
+      const currentUser = users.find((user) => user._id === userId);
 
       if (!currentUser) {
         setError('User not found in the state');
@@ -56,7 +56,7 @@ const AdminTableCard = ({ users, setUsers }) => {
       // update local user state
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
-          user.id === userId ? { ...user, role: response.data.role } : user
+          user._id === userId ? { ...user, role: response.data.role } : user
         )
       );
 
@@ -82,13 +82,13 @@ const AdminTableCard = ({ users, setUsers }) => {
         </TableHead>
         <TableBody>
           {users.map((user) => (
-            <TableRow key={user.id}>
+            <TableRow key={user._id}>
               <TableCell>{user.name}</TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>
                 <Select
                   value={user.role}
-                  onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                  onChange={(e) => handleRoleChange(user._id, e.target.value)}
                 >
                   <MenuItem value="user">User</MenuItem>
                   <MenuItem value="admin">Admin</MenuItem>
@@ -98,7 +98,7 @@ const AdminTableCard = ({ users, setUsers }) => {
                 <Button
                   variant="outlined"
                   onClick={() =>
-                    handleRoleChange(user.id, user.role === 'admin' ? 'user' : 'admin')
+                    handleRoleChange(user._id, user.role === 'admin' ? 'user' : 'admin')
                   }
                 >
                   Toggle Role

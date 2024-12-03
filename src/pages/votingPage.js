@@ -72,8 +72,8 @@ const VotingPage = () => {
        setVotes(votesResponse.data);
 
        // fetch user's current vote if logged in
-       if (user?.id) {
-         const userVoteResponse = await voteService.getUserVote(user.id);
+       if (user?._id) {
+         const userVoteResponse = await voteService.getUserVote(user._id);
          if (userVoteResponse.data) {
            const votedCharacter = charactersResponse.data.characters.find(
              c => c.id === userVoteResponse.data.characterId
@@ -90,7 +90,7 @@ const VotingPage = () => {
    };
 
    fetchData();
- }, [currentPage, user?.id]);
+ }, [currentPage, user?._id]);
 
  // handlers
  const handlePageChange = (event, newPage) => {
@@ -101,7 +101,7 @@ const VotingPage = () => {
  // Add a new function to handle vote removal
 const handleRemoveVote = async (characterId) => {
   try {
-    await voteService.removeVote(user.id);
+    await voteService.removeVote(user._id);
 
     // refresh vote counts
     const votesResponse = await voteService.getVoteCounts();
@@ -122,7 +122,7 @@ const handleRemoveVote = async (characterId) => {
 
  const handleVote = async (characterId) => {
    try {
-     await voteService.vote(user.id, characterId);
+     await voteService.vote(user._id, characterId);
 
      // refresh vote counts
      const votesResponse = await voteService.getVoteCounts();

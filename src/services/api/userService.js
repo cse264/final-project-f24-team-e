@@ -59,8 +59,13 @@ export const userService = {
     }
 
     try {
-      // merge updates with current user data
-      const updatedUser = { ...currentUserData, ...updates };
+
+      // Only include the fields we want to send
+      const updatedUser = {
+        email: currentUserData.email,
+        name: currentUserData.name,
+        role: updates.role || currentUserData.role
+      };
 
       // send updated user back to server
       const response = await apiRequest(`/users/${userId}`, {
