@@ -76,4 +76,39 @@ router.post('/', async (req, res) => {
 });
 
 
+// PUT for updating a user
+// this is used when an admin wants to update some other user to admin
+router.put('/:id', async (req, res) => {
+    const { email, name, role } = req.body;
+    
+    const client = await connectToMongoDB();
+    const db = client.db('Office');
+    const userCollection = db.collection('users');
+    
+    try {
+        const result = await userCollection.findOneAndUpdate(
+            { _id: new ObjectId(req.params.id) },
+                { 
+                    $set: {
+                    email,
+                    name,
+                    role
+                    }
+                },
+        { returnDocument: 'after' }
+        );
+    
+        if (!result) { //if user is not found return error 404 
+            return res.status(404).json({ error: 'User not found' });
+        }
+    
+        res.json(result);
+        } catch (error) {
+        console.error('Error updating user:', error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        } finally {
+            await client.close();
+        }
+    });
+
 module.exports = router;
