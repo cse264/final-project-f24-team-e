@@ -82,4 +82,39 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// METHOD PUT FOR updating an existing vote
+// used this for vote changes -- if a user wants to change their vote (instead of deleting and creating a new vote)
+router.put('/:id', async (req, res) => {
+    const { userId, characterId, timestamp } = req.body;
+    
+    const client = await connectToMongoDB();
+    const db = client.db('Office');
+    const voteCollection = db.collection('vote');
+    
+    try {
+        const result = await voteCollection.findOneAndUpdate(
+            { _id: new ObjectId(req.params.id) },
+        { 
+            $set: {
+                userId: new ObjectId(userId),
+                characterId: parseInt(characterId),
+                timestamp: new Date(timestamp)
+            }
+        },
+            { returnDocument: 'after' }
+        );
+    
+        if (!result) { //if vote is not found return 404 
+            return res.status(404).json({ error: 'Vote not found' });
+        }
+    
+        res.json(result);
+        } catch (error) {
+            console.error('Error updating vote:', error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        } finally {
+            await client.close();
+        }
+    });
+
 module.exports = router;
