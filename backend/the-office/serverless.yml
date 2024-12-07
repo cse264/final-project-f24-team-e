@@ -1,0 +1,49 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: trsutdemir
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: office
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: the-office
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: dev
+  region: us-east-1
+  httpApi:
+    cors:
+      allowedOrigins:
+        - '*'
+      allowedHeaders:
+        - Content-Type
+        - Authorization
+      allowedMethods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - OPTIONS
+  environment:
+    MONGODB_URI: "mongodb+srv://emirvzrglu:o04gQHxpjbT1Dior@cluster0.tduqnwp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+    NODE_ENV: "development"
+
+functions:
+  api:
+    handler: handler.handler
+    events:
+      - httpApi:
+          path: /{proxy+}
+          method: '*'
+    timeout: 29
+    memorySize: 512
+    environment:
+      DEBUG: "*"
+
+package:
+  patterns:
+    - '!node_modules/.cache/**'
+    - 'node_modules/**'
+    - '!.git/**'
+    - '!.vscode/**'
+    - '!test/**'
+

@@ -1,0 +1,78 @@
+{
+  "users": [
+    {
+      "id": "e02d",
+      "email": "normezvenyika2019@gmail.com",
+      "name": "Norme Zvenyika",
+      "role": "user"
+    },
+    {
+      "id": "b380",
+      "email": "noz224@lehigh.edu",
+      "name": "Norman Zvenyika",
+      "role": "admin"
+    },
+    {
+      "id": "41fa",
+      "email": "normanzvenyika7@gmail.com",
+      "name": "Norman Zvenyika",
+      "role": "user"
+    }
+  ],
+  "characters": [
+    {
+      "id": "62",
+      "name": "Pam Beesly",
+      "gender": "Female",
+      "marital": null,
+      "job": [
+        "Sales Representative (former), Dunder Mifflin Scranton",
+        "Receptionist (former), Dunder Mifflin Scranton"
+      ],
+      "workplace": [
+        "Dunder Mifflin Scranton",
+        "Michael Scott Paper Company"
+      ],
+      "firstAppearance": "Pilot",
+      "lastAppearance": "Finale",
+      "actor": "Jenna Fischer",
+      "episodes": [
+        {
+          "type": "MAIN",
+          "episode": {
+            "id": 1,
+            "title": "Pilot"
+          }
+        },
+        {
+          "type": "MAIN",
+          "episode": {
+            "id": 2,
+            "title": "Diversity Day"
+          }
+        }
+      ],
+      "voteCount": 0
+    }
+  ],
+  "votes": [
+    {
+      "id": "5c59",
+      "userId": "e02d",
+      "characterId": 6,
+      "timestamp": "2024-11-29T19:30:58.527Z"
+    },
+    {
+      "id": "8e45",
+      "userId": "b380",
+      "characterId": 6,
+      "timestamp": "2024-12-03T00:24:50.035Z"
+    },
+    {
+      "id": "3356",
+      "userId": "41fa",
+      "characterId": 6,
+      "timestamp": "2024-12-03T00:26:06.166Z"
+    }
+  ]
+}
