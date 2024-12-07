@@ -38,7 +38,6 @@ const styles = {
  }
 };
 
-
 const LoginPage = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
