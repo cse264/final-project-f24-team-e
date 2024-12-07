@@ -1,100 +1,66 @@
-# Getting Started with Create React App
+# The Office Favourites
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A web application that allows users to vote for their favorite characters from The Office TV Series. Users can authenticate through Google OAuth, and admins have special privileges to manage users and votes.
 
-## Available Scripts
+## Team Information
 
-In the project directory, you can run:
+**Team Name:** team-e
 
-### `npm start`
+### Team Members and Roles
+- **Elif Ozturk**: Admin, Database Creation/Management
+- **Norman Zvenyika**: Frontend Developer (all frontend functionality)
+- **Emir Veziroglu**: Backend Developer
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Requirements Implementation
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 1. User Accounts and Roles
+- Two distinct roles: User and Admin
+- Admins have additional privileges for user management
 
-### `npm test`
+### 2. Database
+MongoDB implementation with two collections:
+- Users Collection
+  - _id
+  - email
+  - name
+  - role
+- Votes Collection
+  - _id
+  - userId
+  - characterId
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 3. Interactive UI
+- Built with ReactJS and Material UI
+- Dynamic character cards
+- Real-time vote tracking
+- Responsive design for various screen sizes
 
-### `npm run build`
+### 4. New Framework/Library
+- Google OAuth implementation for secure authentication
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 5. External REST API
+- Integration with The Office API (https://theofficeapi.dev/characters)
+- Used for retrieving detailed character information
+- Displays character details on hover/click
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## User Stories
+1. As a User, I can login to ensure my vote is protected
+2. As an Admin, I can manage users and assign roles to control access and permissions within the system
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Technical Stack
+- **Frontend**: ReactJS
+- **Backend**: Serverless Express.js
+- **Database**: MongoDB
+- **Authentication**: Google OAuth
 
-### `npm run eject`
+## Running the Application
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. Clone the repository
+2. Navigate to the frontend directory
+3. Follow the instructions in the frontend README.md for detailed setup and running instructions
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+For more detailed instructions:
+- For frontend setup and running: See [frontend/README.md](frontend/README.md)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# Final Project
-
-## Due Last day of Class
-## First report due Monday Oct 28, 2024
-
-### Build a web app in a team of 4-5
-
-### Requirements:
-* Must have user accounts and different user roles (like user/Admin, free/paid, etc)
-* Must use a database (you choose)
-* Must have interactive UI (of any kind)
-* Must use a library or framework not discussed/used in class
-* Must use an outside REST API in some way (Outside as in external, like the Reddit API, etc)
-
-* Feel free to build off other projects and frameworks. For example [https://github.com/sahat/hackathon-starter] is a great starter project that you can build on top of.
-
-### Instructions
-Build your team and write a document describing your application to me by Monday Oct 28, 2024. Email this document to me and the TA for this course (Xinhui Chen xic721@lehigh.edu)  I will approve your web application idea. In your paper, include:
-* the name of your application
-* Name and roles of all your team members
-* its functionality (how does it meet each of the requirements listed above - list each requirement along with your will fulfill it)
-* user story/use case (what happens when a user visits your application, what can they do, etc)
-* technical design (what is your tech stack)
-
-
-### Final deliverable due end of the semester:
-* Codebase in Github Repo
-* README describing your project, with all the information outlined above (team members, application name, description, etc). You will also include detailed instructions of how to install and run your application, and what API keys, databases, etc are needed to run your application.
-* Final Presentation and Demo
-  * You will prepare a 5 minute presentation and demo of your application in class during the last week of classes
+## Contact
+For any queries or issues, please contact any of the team members
