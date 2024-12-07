@@ -41,7 +41,6 @@ MongoDB implementation with two collections:
 ### 5. External REST API
 - Integration with The Office API (https://theofficeapi.dev/characters)
 - Used for retrieving detailed character information
-- Displays character details on hover/click
 
 ## User Stories
 1. As a User, I can login to ensure my vote is protected
