@@ -14,7 +14,8 @@ Before running the application, ensure you have:
 
 To start the application:
 1. Make sure you are in the frontend directory
-2. Run: `npm start server`
+2. Run: `npm install`
+3. Run: `npm start server`
 
 ## Project Structure
 
